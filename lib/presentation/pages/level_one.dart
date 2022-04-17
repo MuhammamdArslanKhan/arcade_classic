@@ -15,7 +15,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   int _exitCounter = 0;
   double x = 0.0;
   double y = 0.0;
+ List<Offset> points = [];
 
+ @override
+  void initState() {
+    generatePoints();
+    super.initState();
+  }
   void _incrementEnter(PointerEvent details) {
     setState(() {
       _enterCounter++;
@@ -32,10 +38,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     setState(() {
       x = details.position.dx;
       y = details.position.dy;
-      MyCustomPainter(Offset(x, y));
     });
   }
 
+  generatePoints(){
+    for(int i = 0; i < 20;i++ ){
+      points.add(  Offset(random(0,1400),random(0,600)));
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -48,7 +58,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           onExit: _incrementExit,
           child: CustomPaint(
             // key: _paintKey,
-            painter:   MyCustomPainter(Offset(x, y)),
+            painter:   MyCustomPainter(Offset(x, y),points),
             child:  ConstrainedBox(
               constraints:  const BoxConstraints.expand(),
             ),
