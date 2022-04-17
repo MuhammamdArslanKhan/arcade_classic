@@ -3,30 +3,33 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+import '../../domain/entity/particle.dart';
+
 class BubblePainter extends CustomPainter {
   int bubblesLimit = 20;
-  List<Offset> points =[];
+  final List<Particle> _points ;
+
+  BubblePainter(this._points);
   @override
   void paint(Canvas canvas, Size size) {
-    var paint1 = Paint()
-      ..color = Color(0xff63aa65)
-      ..strokeCap = StrokeCap.round //rounded points
-      ..strokeWidth = 10;
+    Paint paint = Paint()
+      ..color = Colors.red
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 8.0;
+
+    Path path = Path();
+
+    Path secondPath = Path();
+    secondPath.lineTo(size.width / 2, size.height / 2);
+    path.addPath(secondPath, Offset(0, 220));
+    path.addPath(secondPath, Offset(16, 16));
+    canvas.drawPath(path, paint);
     //list of points
-    for(int i = 0; i<bubblesLimit;i++ ){
-      points.add(  Offset(random(0,600),random(0,600)));
-      canvas.drawPoints(PointMode.points, points, paint1);
-    }
-/*    var points = [Offset(50, 50),
-      Offset(80, 70),
-      Offset(380, 175),
-      Offset(200, 175),
-      Offset(150, 105),
-      Offset(300, 75),
-      Offset(320, 200),
-      Offset(89, 125)];
-    //draw points on canvas
-    canvas.drawPoints(PointMode.points, points, paint1);*/
+   /* var paint1 = Paint()
+      ..color = Colors.red
+      ..strokeCap = StrokeCap.round //rounded points
+      ..strokeWidth = 30;
+    canvas.drawPoints(PointMode.points, _points[0].offset, paint1);*/
   }
 
   @override
@@ -35,4 +38,12 @@ class BubblePainter extends CustomPainter {
 
 double random(min, max) {
   return (min + Random().nextInt(max - min)) as double;
+}
+
+
+void paint(Canvas canvas, Size size) {
+  var center = size/2;
+  var paint = Paint()..color = Colors.white..strokeWidth = 10.0;
+
+  canvas.drawLine(Offset(0, center.height), Offset(size.width, center.height), paint);
 }
